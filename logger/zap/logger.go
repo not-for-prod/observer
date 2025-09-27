@@ -3,7 +3,7 @@ package zap
 import (
 	"context"
 
-	"github.com/unitewt/pkg/observability/logger"
+	"github.com/not-for-prod/observer/logger"
 	"go.uber.org/zap"
 )
 

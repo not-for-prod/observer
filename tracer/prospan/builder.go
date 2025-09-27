@@ -3,8 +3,8 @@ package prospan
 import (
 	"context"
 
-	"github.com/unitewt/pkg/observability/logger"
-	"github.com/unitewt/pkg/observability/tracer/autoname"
+	"github.com/not-for-prod/observer/logger"
+	"github.com/not-for-prod/observer/tracer/autoname"
 	"go.opentelemetry.io/otel"
 )
 

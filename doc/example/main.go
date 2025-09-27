@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 
+	"github.com/not-for-prod/observer/logger"
+	"github.com/not-for-prod/observer/logger/zap"
 	"github.com/not-for-prod/observer/tracer"
 	"github.com/not-for-prod/observer/tracer/prospan"
 )
@@ -26,6 +28,15 @@ func foo(ctx context.Context) {
 func main() {
 	ctx := context.Background()
 	tp := tracer.NewProvider()
+
+	logger.SetLogger(zap.NewLogger())
+	logger.Instance().Info("starting application")
+
+	defer func() {
+		if err := logger.Stop(ctx); err != nil {
+			panic(err)
+		}
+	}()
 
 	// Инициализация трейсинга
 	if err := tp.Start(ctx); err != nil {

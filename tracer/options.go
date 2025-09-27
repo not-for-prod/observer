@@ -1,6 +1,6 @@
 package tracer
 
-import "github.com/unitewt/pkg/git"
+import "github.com/not-for-prod/observer/git"
 
 type options struct {
 	host           string

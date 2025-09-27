@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/unitewt/pkg/observability/logger"
+	"github.com/not-for-prod/observer/logger"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
