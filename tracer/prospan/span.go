@@ -16,8 +16,8 @@ type ProSpan struct {
 
 // Start starts the prospan.
 func Start(ctx context.Context) (context.Context, ProSpan) {
-	builder := &Builder{}
-	builder.skipFrames++
+	builder := Name("")
+	builder.skipFrames++ // adjust for calling this function
 
 	return builder.Start(ctx)
 }
