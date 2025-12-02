@@ -48,6 +48,16 @@ func WithAttribute(key string, value any) *Builder {
 	}
 }
 
+func WithRequest(request any) *Builder {
+	key := "request"
+
+	return &Builder{
+		tracerName: "",
+		attributes: map[string]any{key: request},
+		skipFrames: initialSkipFrames,
+	}
+}
+
 func (b *Builder) Start(ctx context.Context) (context.Context, ProSpan) {
 	spanName := b.spanName
 
