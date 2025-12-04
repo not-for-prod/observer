@@ -13,20 +13,14 @@ import (
 )
 
 type Provider struct {
-	options  options
+	options  *options
 	exporter *otlptrace.Exporter
 	provider *tracesdk.TracerProvider
 }
 
 func NewProvider(options ...Option) *Provider {
-	opts := defaultOptions()
-
-	for _, o := range options {
-		o.apply(&opts)
-	}
-
 	return &Provider{
-		options: opts,
+		options: newOptions(options...),
 	}
 }
 
