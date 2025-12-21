@@ -29,8 +29,12 @@ func (p *Provider) Start(ctx context.Context) error {
 
 	p.exporter, err = otlptracegrpc.New(
 		ctx,
-		otlptracegrpc.WithEndpoint(p.options.host),
-		otlptracegrpc.WithInsecure(),
+		append(
+			[]otlptracegrpc.Option{
+				otlptracegrpc.WithEndpoint(p.options.host),
+				otlptracegrpc.WithInsecure(),
+			}, p.options.traceGrpcOptions...,
+		)...,
 	)
 	if err != nil {
 		return err
@@ -38,17 +42,26 @@ func (p *Provider) Start(ctx context.Context) error {
 
 	res, err := resource.New(
 		ctx,
-		resource.WithAttributes(
-			semconv.ServiceNameKey.String(p.options.serviceName),
-		),
+		append(
+			[]resource.Option{
+				resource.WithAttributes(
+					semconv.ServiceNameKey.String(p.options.serviceName),
+				),
+			},
+			p.options.resourceOptions...,
+		)...,
 	)
 	if err != nil {
 		return err
 	}
 
 	p.provider = tracesdk.NewTracerProvider(
-		tracesdk.WithBatcher(p.exporter),
-		tracesdk.WithResource(res),
+		append(
+			[]tracesdk.TracerProviderOption{
+				tracesdk.WithBatcher(p.exporter),
+				tracesdk.WithResource(res),
+			}, p.options.tracerProviderOptions...,
+		)...,
 	)
 
 	otel.SetTracerProvider(p.provider)

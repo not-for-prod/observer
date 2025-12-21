@@ -1,11 +1,19 @@
 package tracer
 
-import "github.com/not-for-prod/observer/git"
+import (
+	"github.com/not-for-prod/observer/git"
+	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
+	"go.opentelemetry.io/otel/sdk/resource"
+	tracesdk "go.opentelemetry.io/otel/sdk/trace"
+)
 
 type options struct {
-	host           string
-	serviceName    string
-	serviceVersion string
+	host                  string
+	serviceName           string
+	serviceVersion        string
+	traceGrpcOptions      []otlptracegrpc.Option
+	resourceOptions       []resource.Option
+	tracerProviderOptions []tracesdk.TracerProviderOption
 }
 
 func newOptions(opts ...Option) *options {
@@ -60,6 +68,30 @@ func WithServiceVersion(serviceVersion string) Option {
 	return optionFunc(
 		func(o *options) {
 			o.serviceVersion = serviceVersion
+		},
+	)
+}
+
+func WithOTLPTraceGrpcOptions(opts ...otlptracegrpc.Option) Option {
+	return optionFunc(
+		func(o *options) {
+			o.traceGrpcOptions = append(o.traceGrpcOptions, opts...)
+		},
+	)
+}
+
+func WithResourceOptions(opts ...resource.Option) Option {
+	return optionFunc(
+		func(o *options) {
+			o.resourceOptions = append(o.resourceOptions, opts...)
+		},
+	)
+}
+
+func WithTracerProviderOptions(opts ...tracesdk.TracerProviderOption) Option {
+	return optionFunc(
+		func(o *options) {
+			o.tracerProviderOptions = append(o.tracerProviderOptions, opts...)
 		},
 	)
 }
