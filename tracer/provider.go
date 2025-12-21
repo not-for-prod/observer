@@ -81,9 +81,5 @@ func (p *Provider) Stop(ctx context.Context) error {
 		}
 	}
 
-	if p.exporter != nil {
-		return p.exporter.Shutdown(ctx)
-	}
-
 	return nil
 }
